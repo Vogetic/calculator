@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css" />
+    <script src="index.js" defer></script>
   </head>
   <body>
     <header><h1>Calculator</h1></header>
@@ -12,10 +13,10 @@
       <article class="calculator">
         <section class="calculator__screen">0</section>
         <section class="calculator__keys">
-          <button class="operator">+</button>
-          <button class="operator">-</button>
-          <button class="operator">&times;</button>
-          <button class="operator">÷</button>
+          <button class="operator" data-action="add">+</button>
+          <button class="operator" data-action="subtract">-</button>
+          <button class="operator" data-action="multiply">&times;</button>
+          <button class="operator" data-action="divide">÷</button>
           <button>7</button>
           <button>8</button>
           <button>9</button>
@@ -26,9 +27,9 @@
           <button>2</button>
           <button>3</button>
           <button>0</button>
-          <button>.</button>
-          <button>AC</button>
-          <button class="equal">=</button>
+          <button data-action="decimal">.</button>
+          <button data-action="clear">AC</button>
+          <button class="equal" data-action="calculate">=</button>
         </section>
       </article>
     </main>
