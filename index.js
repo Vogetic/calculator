@@ -13,9 +13,10 @@ keys.addEventListener("click", (e) => {
     if (!action) {
       if (screenContent === "0" || previousAction === "operator") {
         screen.textContent = keyValue;
-        calculator.dataset.previousAction = "";
+        calculator.dataset.previousAction = "number";
       } else {
         screen.textContent += keyValue;
+        calculator.dataset.previousAction = "number";
       }
     }
 
@@ -25,18 +26,21 @@ keys.addEventListener("click", (e) => {
       action === "multiply" ||
       action === "divide"
     ) {
-      calculator.dataset.firstValue = screenContent;
-      calculator.dataset.operator = action;
-      calculator.dataset.previousAction = "operator";
-      calculator.dataset.hasDecimal = "";
+      if (previousAction != "decimal") {
+        calculator.dataset.firstValue = screenContent;
+        calculator.dataset.operator = action;
+        calculator.dataset.previousAction = "operator";
+      }
     }
 
     if (action === "decimal") {
-      let hasDecimal = Boolean(calculator.dataset.hasDecimal);
-      // console.log(hasDecimal);
-      if (hasDecimal === false) {
-        calculator.dataset.hasDecimal = true;
+      if (!screenContent.includes(".")) {
         screen.textContent += keyValue;
+        calculator.dataset.previousAction = "decimal";
+      }
+      if (previousAction === "operator") {
+        screen.textContent = "0.";
+        calculator.dataset.previousAction = "decimal";
       }
     }
 
@@ -45,15 +49,16 @@ keys.addEventListener("click", (e) => {
       calculator.dataset.firstValue = screen.textContent;
       calculator.dataset.operator = "";
       calculator.dataset.previousAction = "";
-      calculator.dataset.hasDecimal = "";
     }
 
     if (action === "calculate") {
-      const firstValue = calculator.dataset.firstValue;
-      const secondValue = screenContent;
-      const operator = calculator.dataset.operator;
-      screen.textContent = calculate(firstValue, secondValue, operator);
-      calculator.dataset.firstValue = screen.textContent;
+      if (previousAction != "decimal") {
+        const firstValue = calculator.dataset.firstValue;
+        const secondValue = screenContent;
+        const operator = calculator.dataset.operator;
+        screen.textContent = calculate(firstValue, secondValue, operator);
+        calculator.dataset.firstValue = screen.textContent;
+      }
     }
   }
 });
