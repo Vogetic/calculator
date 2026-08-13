@@ -14,17 +14,16 @@ keys.addEventListener("click", (e) => {
     const previousAction = calculator.dataset.previousAction;
 
     if (!action) {
-      if (
-        screenContent === "0" ||
-        previousAction === "operator" ||
-        previousAction === "calculate"
-      ) {
+      if (screenContent === "0" || previousAction === "operator") {
         screen.textContent = keyValue;
-        calculator.dataset.previousAction = "number";
+      } else if (previousAction === "calculate") {
+        screen.textContent = keyValue;
+        calculator.dataset.firstValue = "";
+        calculator.dataset.secondValue = "";
       } else {
         screen.textContent += keyValue;
-        calculator.dataset.previousAction = "number";
       }
+      calculator.dataset.previousAction = "number";
     }
 
     if (
@@ -57,9 +56,13 @@ keys.addEventListener("click", (e) => {
         screen.textContent += keyValue;
         calculator.dataset.previousAction = "decimal";
       }
-      if (previousAction === "operator" || previousAction === "calculate") {
+      if (previousAction === "operator") {
         screen.textContent = "0.";
         calculator.dataset.previousAction = "decimal";
+      } else if (previousAction === "calculate") {
+        screen.textContent = "0.";
+        calculator.dataset.firstValue = "";
+        calculator.dataset.secondValue = "";
       }
     }
 
@@ -72,7 +75,7 @@ keys.addEventListener("click", (e) => {
     }
 
     if (action === "calculate") {
-      if (previousAction != "decimal") {
+      if (previousAction != "decimal" && calculator.dataset.firstValue != "") {
         const firstValue = calculator.dataset.firstValue;
         let secondValue;
         const operator = calculator.dataset.operator;
