@@ -47,6 +47,7 @@ keys.addEventListener("click", (e) => {
     if (action === "clear") {
       screen.textContent = "0";
       calculator.dataset.firstValue = screen.textContent;
+      calculator.dataset.secondValue = "";
       calculator.dataset.operator = "";
       calculator.dataset.previousAction = "";
     }
@@ -54,10 +55,21 @@ keys.addEventListener("click", (e) => {
     if (action === "calculate") {
       if (previousAction != "decimal") {
         const firstValue = calculator.dataset.firstValue;
-        const secondValue = screenContent;
+        let secondValue;
         const operator = calculator.dataset.operator;
-        screen.textContent = calculate(firstValue, secondValue, operator);
-        calculator.dataset.firstValue = screen.textContent;
+        if (previousAction === "calculate") {
+          secondValue = calculator.dataset.secondValue;
+          screen.textContent = calculate(firstValue, secondValue, operator);
+          calculator.dataset.firstValue = screen.textContent;
+          calculator.dataset.previousAction = "calculate";
+        } else {
+          calculator.dataset.secondValue = screenContent;
+          secondValue = calculator.dataset.secondValue;
+
+          screen.textContent = calculate(firstValue, secondValue, operator);
+          calculator.dataset.firstValue = screen.textContent;
+          calculator.dataset.previousAction = "calculate";
+        }
       }
     }
   }
