@@ -2,6 +2,9 @@ const calculator = document.querySelector(".calculator");
 const keys = document.querySelector(".calculator__keys");
 const screen = document.querySelector(".calculator__screen");
 
+calculator.dataset.firstValue = "";
+calculator.dataset.secondValue = "";
+
 keys.addEventListener("click", (e) => {
   if (e.target.matches("button")) {
     const key = e.target;
@@ -11,7 +14,11 @@ keys.addEventListener("click", (e) => {
     const previousAction = calculator.dataset.previousAction;
 
     if (!action) {
-      if (screenContent === "0" || previousAction === "operator") {
+      if (
+        screenContent === "0" ||
+        previousAction === "operator" ||
+        previousAction === "calculate"
+      ) {
         screen.textContent = keyValue;
         calculator.dataset.previousAction = "number";
       } else {
@@ -26,9 +33,21 @@ keys.addEventListener("click", (e) => {
       action === "multiply" ||
       action === "divide"
     ) {
-      if (previousAction != "decimal") {
-        calculator.dataset.firstValue = screenContent;
+      if (
+        previousAction != "decimal" &&
+        previousAction != "operator" &&
+        previousAction != "calculate"
+      ) {
         calculator.dataset.operator = action;
+
+        if (calculator.dataset.firstValue !== "") {
+          calculator.dataset.secondValue = screenContent;
+          const firstValue = calculator.dataset.firstValue;
+          const secondValue = calculator.dataset.secondValue;
+          const operator = calculator.dataset.operator;
+          screen.textContent = calculate(firstValue, secondValue, operator);
+        }
+        calculator.dataset.firstValue = screen.textContent;
         calculator.dataset.previousAction = "operator";
       }
     }
@@ -38,7 +57,7 @@ keys.addEventListener("click", (e) => {
         screen.textContent += keyValue;
         calculator.dataset.previousAction = "decimal";
       }
-      if (previousAction === "operator") {
+      if (previousAction === "operator" || previousAction === "calculate") {
         screen.textContent = "0.";
         calculator.dataset.previousAction = "decimal";
       }
