@@ -110,13 +110,13 @@ keys.addEventListener("click", (e) => {
 });
 
 function calculate(firstValue, secondValue, operator) {
-  if (operator === "add") {
-    return Number(firstValue) + Number(secondValue);
-  } else if (operator === "subtract") {
-    return Number(firstValue) - Number(secondValue);
-  } else if (operator === "multiply") {
-    return Number(firstValue) * Number(secondValue);
-  } else if (operator === "divide") {
-    return Number(firstValue) / Number(secondValue);
-  }
+  const firstNumber = Number(firstValue);
+  const secondNumber = Number(secondValue);
+  if (operator === "add") return firstNumber + secondNumber;
+
+  if (operator === "subtract") return firstNumber - secondNumber;
+
+  if (operator === "multiply") return firstNumber * secondNumber;
+
+  if (operator === "divide") return firstNumber / secondNumber;
 }
