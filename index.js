@@ -4,6 +4,7 @@ const screen = document.querySelector(".calculator__screen");
 
 calculator.dataset.firstValue = "";
 calculator.dataset.secondValue = "";
+calculator.dataset.previousAction = "";
 
 keys.addEventListener("click", (e) => {
   if (e.target.matches("button")) {
@@ -12,6 +13,10 @@ keys.addEventListener("click", (e) => {
     let screenContent = screen.textContent;
     const keyValue = key.textContent;
     const previousAction = calculator.dataset.previousAction;
+
+    if (action != "clear") {
+      document.querySelector("[data-action='clear']").textContent = "CE";
+    }
 
     if (!action) {
       if (screenContent === "0" || previousAction === "operator") {
@@ -23,6 +28,7 @@ keys.addEventListener("click", (e) => {
       } else {
         screen.textContent += keyValue;
       }
+
       calculator.dataset.previousAction = "number";
     }
 
@@ -35,7 +41,8 @@ keys.addEventListener("click", (e) => {
       if (
         previousAction != "decimal" &&
         previousAction != "operator" &&
-        previousAction != "calculate"
+        previousAction != "calculate" &&
+        previousAction != ""
       ) {
         calculator.dataset.operator = action;
 
@@ -68,10 +75,15 @@ keys.addEventListener("click", (e) => {
 
     if (action === "clear") {
       screen.textContent = "0";
-      calculator.dataset.firstValue = screen.textContent;
-      calculator.dataset.secondValue = "";
-      calculator.dataset.operator = "";
-      calculator.dataset.previousAction = "";
+
+      if (keyValue === "AC") {
+        calculator.dataset.firstValue = "";
+        calculator.dataset.secondValue = "";
+        calculator.dataset.operator = "";
+        calculator.dataset.previousAction = "";
+      } else {
+        key.textContent = "AC";
+      }
     }
 
     if (action === "calculate") {
